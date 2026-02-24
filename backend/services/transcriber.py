@@ -23,7 +23,13 @@ def transcribe_with_local(filepath: str, model_size: str = "base") -> str:
     """Transcribe audio using local Whisper model."""
     global _whisper_model
     
-    import whisper
+    try:
+        import whisper
+    except ImportError:
+        raise ImportError(
+            "Local Whisper not installed. Install with: pip install openai-whisper\n"
+            "Or use API mode instead."
+        )
     
     if _whisper_model is None:
         _whisper_model = whisper.load_model(model_size)
