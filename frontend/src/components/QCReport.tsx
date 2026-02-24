@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { CheckCircle, AlertCircle, HelpCircle, ChevronDown, ChevronUp } from 'lucide-react';
-import { QCReport as QCReportType, ScriptLine } from '../lib/api';
+import { QCReport as QCReportType } from '../lib/api';
 import { cn, getContrastColor, formatPercentage } from '../lib/utils';
 
 interface QCReportProps {
@@ -103,7 +103,7 @@ export default function QCReport({ report }: QCReportProps) {
             {f.charAt(0).toUpperCase() + f.slice(1)}
             {f !== 'all' && (
               <span className="ml-2 text-xs">
-                ({f === 'missing' ? report.missing_lines : report[`${f}_lines` as keyof QCReportType]})
+                ({f === 'found' ? report.found_lines : f === 'partial' ? report.partial_lines : report.missing_lines})
               </span>
             )}
           </button>

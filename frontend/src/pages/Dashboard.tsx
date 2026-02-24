@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Plus, Folder, Trash2, ExternalLink } from 'lucide-react';
 import { projectsApi, Project } from '../lib/api';
-import { cn, formatPercentage } from '../lib/utils';
+import { cn } from '../lib/utils';
 
 export default function Dashboard() {
   const navigate = useNavigate();

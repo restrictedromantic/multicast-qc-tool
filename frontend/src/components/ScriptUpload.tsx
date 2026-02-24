@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { Upload, FileText, Check, AlertCircle } from 'lucide-react';
+import { Upload, Check, AlertCircle } from 'lucide-react';
 import { scriptsApi } from '../lib/api';
 import { cn } from '../lib/utils';
 

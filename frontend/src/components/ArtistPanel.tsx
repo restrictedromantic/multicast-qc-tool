@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Edit2, Check, X } from 'lucide-react';
 import { Artist, scriptsApi } from '../lib/api';
-import { cn, getContrastColor, formatPercentage } from '../lib/utils';
+import { formatPercentage } from '../lib/utils';
 
 interface ArtistPanelProps {
   projectId: string;

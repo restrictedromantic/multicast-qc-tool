@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, FileText, Music, BarChart3, RefreshCw, ExternalLink } from 'lucide-react';
-import { projectsApi, scriptsApi, qcApi, Project, Artist, QCReport as QCReportType } from '../lib/api';
+import { projectsApi, qcApi, Project, Artist, QCReport as QCReportType } from '../lib/api';
 import ScriptUpload from '../components/ScriptUpload';
 import AudioUpload from '../components/AudioUpload';
 import ArtistPanel from '../components/ArtistPanel';

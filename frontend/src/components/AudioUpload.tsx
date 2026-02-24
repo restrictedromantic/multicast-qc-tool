@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { Upload, Music, Check, AlertCircle, Loader2 } from 'lucide-react';
+import { Music, Check, AlertCircle, Loader2 } from 'lucide-react';
 import { audioApi, Artist } from '../lib/api';
 import { cn, getContrastColor } from '../lib/utils';
 
