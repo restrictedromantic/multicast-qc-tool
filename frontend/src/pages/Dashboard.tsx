@@ -9,6 +9,8 @@ export default function Dashboard() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [createError, setCreateError] = useState<string | null>(null);
+  const [isCreating, setIsCreating] = useState(false);
   const [newProject, setNewProject] = useState({
     name: '',
     show_code: '',
@@ -31,13 +33,26 @@ export default function Dashboard() {
   };
 
   const createProject = async () => {
+    setCreateError(null);
+    setIsCreating(true);
     try {
       const response = await projectsApi.create(newProject);
       setShowCreateModal(false);
       setNewProject({ name: '', show_code: '', episode_number: '' });
       navigate(`/project/${response.data.id}`);
-    } catch (error) {
-      console.error('Failed to create project:', error);
+    } catch (error: any) {
+      const status = error.response?.status;
+      const detail = error.response?.data?.detail;
+      const msg = typeof detail === 'string' ? detail : error.message;
+      if (error.code === 'ERR_NETWORK' || !error.response || status === 404) {
+        setCreateError(
+          'Backend not configured. In Vercel → Project → Settings → Environment Variables, add VITE_API_URL = your Railway backend URL (e.g. https://your-app.up.railway.app), then redeploy.'
+        );
+      } else {
+        setCreateError(msg || 'Could not create project.');
+      }
+    } finally {
+      setIsCreating(false);
     }
   };
 
@@ -68,7 +83,10 @@ export default function Dashboard() {
           <p className="text-gray-500 dark:text-pfm-text-muted">Manage your multicast QC projects</p>
         </div>
         <button
-          onClick={() => setShowCreateModal(true)}
+          onClick={() => {
+            setShowCreateModal(true);
+            setCreateError(null);
+          }}
           className="flex items-center gap-2 px-4 py-2 bg-purple-600 dark:bg-pfm-accent text-white rounded-lg hover:bg-purple-700 dark:hover:bg-pfm-accent-hover transition-colors"
         >
           <Plus className="w-4 h-4" />
@@ -148,8 +166,8 @@ export default function Dashboard() {
 
       {/* Create Modal */}
       {showCreateModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-pfm-surface rounded-xl p-6 w-full max-w-md shadow-xl border border-gray-200 dark:border-pfm-border">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => { setShowCreateModal(false); setCreateError(null); }}>
+          <div className="bg-white dark:bg-pfm-surface rounded-xl p-6 w-full max-w-md shadow-xl border border-gray-200 dark:border-pfm-border" onClick={(e) => e.stopPropagation()}>
             <h2 className="text-xl font-bold text-gray-900 dark:text-pfm-text mb-4">New QC Project</h2>
             <div className="space-y-4">
               <div>
@@ -189,19 +207,26 @@ export default function Dashboard() {
                 />
               </div>
             </div>
+            {createError && (
+              <p className="mt-3 text-sm text-red-600 dark:text-pfm-error">
+                {createError}
+              </p>
+            )}
             <div className="flex justify-end gap-3 mt-6">
               <button
-                onClick={() => setShowCreateModal(false)}
+                type="button"
+                onClick={() => { setShowCreateModal(false); setCreateError(null); }}
                 className="px-4 py-2 text-gray-600 hover:bg-gray-100 dark:text-pfm-text-muted dark:hover:bg-pfm-surface-hover rounded-lg transition-colors"
               >
                 Cancel
               </button>
               <button
-                onClick={createProject}
-                disabled={!newProject.name || !newProject.show_code || !newProject.episode_number}
+                type="button"
+                onClick={(e) => { e.stopPropagation(); createProject(); }}
+                disabled={!newProject.name || !newProject.show_code || !newProject.episode_number || isCreating}
                 className="px-4 py-2 bg-purple-600 dark:bg-pfm-accent text-white rounded-lg hover:bg-purple-700 dark:hover:bg-pfm-accent-hover transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Create Project
+                {isCreating ? 'Creating…' : 'Create Project'}
               </button>
             </div>
           </div>
