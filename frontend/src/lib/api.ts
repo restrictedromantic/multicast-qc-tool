@@ -1,9 +1,7 @@
 import axios from 'axios';
 
-const API_BASE = import.meta.env.VITE_API_URL || '/api';
-
-/** For debugging: what API URL the built app is using (set at build time). */
-export const apiBaseUrl = API_BASE;
+// Always use /api: locally Vite proxies to backend; on Vercel vercel.json rewrites /api to Railway.
+const API_BASE = '/api';
 
 const api = axios.create({
   baseURL: API_BASE,
