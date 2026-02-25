@@ -1,6 +1,7 @@
 {
   "rewrites": [
-    { "source": "/((?!api/).*)", "destination": "/" }
+    { "source": "/project/:path*", "destination": "/" },
+    { "source": "/settings", "destination": "/" }
   ],
   "headers": [
     {
