@@ -4,8 +4,8 @@ export default async function handler(req, res) {
   const path = req.query.path || [];
   const pathStr = Array.isArray(path) ? path.join('/') : path;
   const method = (req.method || 'GET').toUpperCase();
-  // FastAPI expects POST /projects/ (trailing slash) for create; avoid redirect
-  const needsTrailingSlash = ['POST', 'PUT', 'PATCH'].includes(method) && pathStr && !pathStr.endsWith('/');
+  // Only POST /projects needs trailing slash (FastAPI create). Others (e.g. /scripts/:id/upload) must not get it or redirect drops body.
+  const needsTrailingSlash = method === 'POST' && pathStr === 'projects';
   const url = `${BACKEND}/${pathStr}${needsTrailingSlash ? '/' : ''}`;
 
   const forwardHeaders = {};
@@ -14,7 +14,13 @@ export default async function handler(req, res) {
 
   let body = undefined;
   if (method !== 'GET' && method !== 'HEAD' && req.body != null) {
-    body = typeof req.body === 'object' && !Buffer.isBuffer(req.body) ? JSON.stringify(req.body) : req.body;
+    const ct = (req.headers['content-type'] || '').toLowerCase();
+    // Keep multipart/form-data raw so file uploads work
+    if (ct.includes('multipart/form-data')) {
+      body = req.body;
+    } else {
+      body = typeof req.body === 'object' && !Buffer.isBuffer(req.body) ? JSON.stringify(req.body) : req.body;
+    }
   }
 
   try {

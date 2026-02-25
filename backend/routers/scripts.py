@@ -7,7 +7,7 @@ import shutil
 
 from models.database import get_db, Project, Artist, ScriptLine
 from models.schemas import ScriptLineResponse, ColorMapping
-from services.script_parser import parse_docx_with_all_lines, get_unique_colors
+from services.script_parser import parse_docx_with_all_lines, parse_pdf_with_all_lines, get_unique_colors
 
 router = APIRouter(prefix="/scripts", tags=["scripts"])
 
@@ -21,13 +21,14 @@ async def upload_script(
     file: UploadFile = File(...),
     db: Session = Depends(get_db)
 ):
-    """Upload a script file (DOCX) for a project."""
+    """Upload a script file (DOCX or PDF) for a project."""
     project = db.query(Project).filter(Project.id == project_id).first()
     if not project:
         raise HTTPException(status_code=404, detail="Project not found")
     
-    if not file.filename.endswith('.docx'):
-        raise HTTPException(status_code=400, detail="Only DOCX files are supported")
+    fn = (file.filename or "").lower()
+    if not (fn.endswith(".docx") or fn.endswith(".pdf")):
+        raise HTTPException(status_code=400, detail="Only DOCX and PDF files are supported")
     
     file_id = str(uuid.uuid4())
     filename = f"{file_id}_{file.filename}"
@@ -37,7 +38,10 @@ async def upload_script(
         shutil.copyfileobj(file.file, buffer)
     
     try:
-        all_lines = parse_docx_with_all_lines(filepath)
+        if fn.endswith(".pdf"):
+            all_lines = parse_pdf_with_all_lines(filepath)
+        else:
+            all_lines = parse_docx_with_all_lines(filepath)
         colors = list(set(color for _, _, color in all_lines))
         
         db.query(ScriptLine).filter(ScriptLine.project_id == project_id).delete()

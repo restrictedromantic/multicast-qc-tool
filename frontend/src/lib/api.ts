@@ -72,9 +72,8 @@ export const scriptsApi = {
   upload: (projectId: string, file: File) => {
     const formData = new FormData();
     formData.append('file', file);
-    return api.post(`/scripts/${projectId}/upload`, formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-    });
+    // Do NOT set Content-Type: axios must set it with boundary so the server can parse multipart
+    return api.post(`/scripts/${projectId}/upload`, formData);
   },
   getLines: (projectId: string) =>
     api.get<ScriptLine[]>(`/scripts/${projectId}/lines`),
@@ -92,9 +91,8 @@ export const audioApi = {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('artist_id', artistId);
-    return api.post<AudioFile>(`/audio/${projectId}/upload`, formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-    });
+    // Do NOT set Content-Type: axios must set it with boundary so the server can parse multipart
+    return api.post<AudioFile>(`/audio/${projectId}/upload`, formData);
   },
   transcribe: (projectId: string, audioId: string) =>
     api.post(`/audio/${projectId}/transcribe/${audioId}`),

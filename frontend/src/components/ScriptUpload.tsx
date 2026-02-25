@@ -48,9 +48,10 @@ export default function ScriptUpload({ projectId, onUploadComplete }: ScriptUplo
   );
 
   const uploadFile = async (file: File) => {
-    if (!file.name.endsWith('.docx')) {
+    const name = file.name.toLowerCase();
+    if (!name.endsWith('.docx') && !name.endsWith('.pdf')) {
       setUploadStatus('error');
-      setMessage('Please upload a .docx file');
+      setMessage('Please upload a .docx or .pdf file');
       return;
     }
 
@@ -66,7 +67,8 @@ export default function ScriptUpload({ projectId, onUploadComplete }: ScriptUplo
       onUploadComplete();
     } catch (error: any) {
       setUploadStatus('error');
-      setMessage(error.response?.data?.detail || 'Upload failed');
+      const detail = error.response?.data?.detail;
+      setMessage(typeof detail === 'string' ? detail : Array.isArray(detail) ? detail.join(', ') : 'Upload failed');
     } finally {
       setIsUploading(false);
     }
@@ -88,11 +90,12 @@ export default function ScriptUpload({ projectId, onUploadComplete }: ScriptUplo
       >
         <input
           type="file"
-          accept=".docx"
+          accept=".docx,.pdf,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
           onChange={handleFileSelect}
           className="hidden"
           id="script-upload"
           disabled={isUploading}
+          aria-label="Upload script (.docx or .pdf)"
         />
         <label htmlFor="script-upload" className="cursor-pointer">
           <div className="flex flex-col items-center gap-3">
@@ -108,7 +111,7 @@ export default function ScriptUpload({ projectId, onUploadComplete }: ScriptUplo
                 {isUploading ? 'Uploading & parsing...' : 'Drop your script here'}
               </p>
               <p className="text-xs text-gray-500 dark:text-pfm-text-muted mt-1">
-                Supports .docx files with color-coded text
+                Supports .docx and .pdf (color-coded in .docx)
               </p>
             </div>
           </div>

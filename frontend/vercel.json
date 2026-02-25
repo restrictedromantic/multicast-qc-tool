@@ -1,6 +1,10 @@
 {
   "rewrites": [
     { "source": "/api/projects/:path*", "destination": "/api/proxy" },
+    { "source": "/api/scripts/:path*", "destination": "https://multicastqctool-production.up.railway.app/scripts/:path*" },
+    { "source": "/api/audio/:path*", "destination": "https://multicastqctool-production.up.railway.app/audio/:path*" },
+    { "source": "/api/qc/:path*", "destination": "https://multicastqctool-production.up.railway.app/qc/:path*" },
+    { "source": "/api/settings", "destination": "https://multicastqctool-production.up.railway.app/settings" },
     { "source": "/project/:path*", "destination": "/" },
     { "source": "/settings", "destination": "/" }
   ],

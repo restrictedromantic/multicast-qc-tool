@@ -198,7 +198,7 @@ export default function ProjectView() {
                 <div className="text-center py-8 text-gray-500 dark:text-pfm-text-muted space-y-3">
                   <Music className="w-12 h-12 mx-auto text-gray-300 dark:text-pfm-text-muted" />
                   <p className="font-medium">Upload a script first</p>
-                  <p className="text-sm">Go to the <strong>Script</strong> tab, upload your color-coded .docx script, then come back here to upload each artist’s audio.</p>
+                  <p className="text-sm">Go to the <strong>Script</strong> tab, upload your script (.docx or .pdf), then come back here to upload each artist’s audio.</p>
                   <button
                     type="button"
                     onClick={() => setActiveTab('script')}
