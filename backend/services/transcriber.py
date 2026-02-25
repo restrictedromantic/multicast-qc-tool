@@ -19,10 +19,17 @@ def transcribe_with_api(filepath: str, api_key: str) -> str:
     return transcript
 
 
-def transcribe_with_local(filepath: str, model_size: str = "base") -> str:
+def transcribe_with_local(filepath: str, model_size: str = "tiny") -> str:
     """Transcribe audio using local Whisper model."""
     global _whisper_model
-    
+
+    try:
+        import numpy  # noqa: F401 - required by whisper/torch
+    except ImportError:
+        raise ImportError(
+            "Numpy is not available. Install with: pip install numpy\n"
+            "Then restart the backend."
+        )
     try:
         import whisper
     except ImportError:

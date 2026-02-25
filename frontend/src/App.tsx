@@ -1,4 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
+import { ThemeProvider } from './contexts/ThemeContext';
 import Layout from './components/Layout';
 import Dashboard from './pages/Dashboard';
 import ProjectView from './pages/ProjectView';
@@ -6,13 +7,15 @@ import Settings from './pages/Settings';
 
 function App() {
   return (
-    <Layout>
-      <Routes>
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/project/:projectId" element={<ProjectView />} />
-        <Route path="/settings" element={<Settings />} />
-      </Routes>
-    </Layout>
+    <ThemeProvider>
+      <Layout>
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/project/:projectId" element={<ProjectView />} />
+          <Route path="/settings" element={<Settings />} />
+        </Routes>
+      </Layout>
+    </ThemeProvider>
   );
 }
 

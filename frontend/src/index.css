@@ -5,3 +5,23 @@
 body {
   @apply bg-gray-50 text-gray-900 antialiased;
 }
+
+html.dark {
+  color-scheme: dark;
+}
+
+html.dark body {
+  background-color: #0f0f14;
+  color: #f4f4f5;
+  @apply antialiased;
+}
+
+html.dark * {
+  scrollbar-color: #2a2a36 #1a1a22;
+}
+
+html.dark *:focus-visible {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px #0f0f14, 0 0 0 4px #ec4899;
+}

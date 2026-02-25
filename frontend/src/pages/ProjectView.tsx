@@ -70,7 +70,7 @@ export default function ProjectView() {
   if (isLoading) {
     return (
       <div className="flex justify-center py-12">
-        <div className="w-8 h-8 border-4 border-purple-500 border-t-transparent rounded-full animate-spin" />
+        <div className="w-8 h-8 border-4 border-purple-500 dark:border-pfm-accent border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -78,8 +78,8 @@ export default function ProjectView() {
   if (!project) {
     return (
       <div className="text-center py-12">
-        <h2 className="text-xl font-bold text-gray-900 mb-2">Project not found</h2>
-        <Link to="/" className="text-purple-600 hover:underline">
+        <h2 className="text-xl font-bold text-gray-900 dark:text-pfm-text mb-2">Project not found</h2>
+        <Link to="/" className="text-purple-600 dark:text-pfm-accent hover:underline">
           Back to Dashboard
         </Link>
       </div>
@@ -93,13 +93,13 @@ export default function ProjectView() {
         <div className="flex items-center gap-4">
           <Link
             to="/"
-            className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+            className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 dark:text-pfm-text-muted dark:hover:text-pfm-text dark:hover:bg-pfm-surface-hover rounded-lg transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
           </Link>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">{project.name}</h1>
-            <p className="text-gray-500">
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-pfm-text">{project.name}</h1>
+            <p className="text-gray-500 dark:text-pfm-text-muted">
               {project.show_code} - {project.episode_number}
             </p>
           </div>
@@ -107,14 +107,14 @@ export default function ProjectView() {
         <div className="flex items-center gap-2">
           <button
             onClick={refreshReport}
-            className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+            className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:bg-gray-100 dark:text-pfm-text-muted dark:hover:bg-pfm-surface-hover rounded-lg transition-colors"
           >
             <RefreshCw className="w-4 h-4" />
             Refresh
           </button>
           <button
             onClick={copyShareLink}
-            className="flex items-center gap-2 px-3 py-2 bg-purple-100 text-purple-700 rounded-lg hover:bg-purple-200 transition-colors"
+            className="flex items-center gap-2 px-3 py-2 bg-purple-100 text-purple-700 dark:bg-pfm-accent/20 dark:text-pfm-accent rounded-lg hover:bg-purple-200 dark:hover:bg-pfm-accent/30 transition-colors"
           >
             <ExternalLink className="w-4 h-4" />
             Share
@@ -123,7 +123,7 @@ export default function ProjectView() {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-2 border-b border-gray-200 pb-2">
+      <div className="flex gap-2 border-b border-gray-200 dark:border-pfm-border pb-2">
         {[
           { id: 'script' as Tab, label: 'Script', icon: FileText },
           { id: 'audio' as Tab, label: 'Audio', icon: Music },
@@ -135,8 +135,8 @@ export default function ProjectView() {
             className={cn(
               'flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors',
               activeTab === id
-                ? 'bg-purple-100 text-purple-700'
-                : 'text-gray-600 hover:bg-gray-100'
+                ? 'bg-purple-100 text-purple-700 dark:bg-pfm-accent/20 dark:text-pfm-accent'
+                : 'text-gray-600 hover:bg-gray-100 dark:text-pfm-text-muted dark:hover:bg-pfm-surface-hover'
             )}
           >
             <Icon className="w-4 h-4" />
@@ -149,22 +149,22 @@ export default function ProjectView() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">
           {activeTab === 'script' && (
-            <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">Upload Script</h2>
+            <div className="bg-white dark:bg-pfm-surface rounded-xl border border-gray-200 dark:border-pfm-border p-6 shadow-sm">
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-pfm-text mb-4">Upload Script</h2>
               <ScriptUpload projectId={project.id} onUploadComplete={loadProject} />
               
               {project.script_uploaded && report && (
-                <div className="mt-6 pt-6 border-t border-gray-200">
-                  <h3 className="text-sm font-medium text-gray-700 mb-3">Script Preview</h3>
+                <div className="mt-6 pt-6 border-t border-gray-200 dark:border-pfm-border">
+                  <h3 className="text-sm font-medium text-gray-700 dark:text-pfm-text-muted mb-3">Script Preview</h3>
                   <div className="max-h-96 overflow-y-auto space-y-2">
                     {report.lines.slice(0, 20).map((line) => (
                       <div
                         key={line.id}
                         className="flex items-start gap-2 text-sm"
                       >
-                        <span className="text-gray-400 w-8 text-right">{line.line_number}.</span>
+                        <span className="text-gray-400 dark:text-pfm-text-muted w-8 text-right">{line.line_number}.</span>
                         <span
-                          className="px-1 rounded"
+                          className="px-1 rounded dark:text-pfm-text"
                           style={{ backgroundColor: `${line.artist_color}20` }}
                         >
                           {line.text}
@@ -172,7 +172,7 @@ export default function ProjectView() {
                       </div>
                     ))}
                     {report.lines.length > 20 && (
-                      <p className="text-sm text-gray-500 pl-10">
+                      <p className="text-sm text-gray-500 dark:text-pfm-text-muted pl-10">
                         ... and {report.lines.length - 20} more lines
                       </p>
                     )}
@@ -183,12 +183,20 @@ export default function ProjectView() {
           )}
 
           {activeTab === 'audio' && (
-            <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">Upload Audio</h2>
+            <div className="bg-white dark:bg-pfm-surface rounded-xl border border-gray-200 dark:border-pfm-border p-6 shadow-sm">
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-pfm-text mb-4">Upload Audio</h2>
               {artists.length === 0 ? (
-                <div className="text-center py-8 text-gray-500">
-                  <Music className="w-12 h-12 mx-auto mb-3 text-gray-300" />
-                  <p>Upload a script first to see artists</p>
+                <div className="text-center py-8 text-gray-500 dark:text-pfm-text-muted space-y-3">
+                  <Music className="w-12 h-12 mx-auto text-gray-300 dark:text-pfm-text-muted" />
+                  <p className="font-medium">Upload a script first</p>
+                  <p className="text-sm">Go to the <strong>Script</strong> tab, upload your color-coded .docx script, then come back here to upload each artist’s audio.</p>
+                  <button
+                    type="button"
+                    onClick={() => setActiveTab('script')}
+                    className="mt-2 px-4 py-2 bg-purple-600 dark:bg-pfm-accent text-white rounded-lg hover:bg-purple-700 dark:hover:bg-pfm-accent-hover text-sm"
+                  >
+                    Go to Script tab
+                  </button>
                 </div>
               ) : (
                 <AudioUpload
@@ -205,9 +213,9 @@ export default function ProjectView() {
               {report ? (
                 <QCReport report={report} />
               ) : (
-                <div className="bg-white rounded-xl border border-gray-200 p-8 text-center">
-                  <BarChart3 className="w-12 h-12 mx-auto mb-3 text-gray-300" />
-                  <p className="text-gray-500">Upload a script and audio to generate QC report</p>
+                <div className="bg-white dark:bg-pfm-surface rounded-xl border border-gray-200 dark:border-pfm-border p-8 text-center">
+                  <BarChart3 className="w-12 h-12 mx-auto mb-3 text-gray-300 dark:text-pfm-text-muted" />
+                  <p className="text-gray-500 dark:text-pfm-text-muted">Upload a script and audio to generate QC report</p>
                 </div>
               )}
             </div>
@@ -217,7 +225,7 @@ export default function ProjectView() {
         {/* Sidebar */}
         <div className="space-y-6">
           {artists.length > 0 && (
-            <div className="bg-white rounded-xl border border-gray-200 p-4 shadow-sm">
+            <div className="bg-white dark:bg-pfm-surface rounded-xl border border-gray-200 dark:border-pfm-border p-4 shadow-sm">
               <ArtistPanel
                 projectId={project.id}
                 artists={artists}
@@ -227,7 +235,7 @@ export default function ProjectView() {
           )}
 
           {report && (
-            <div className="bg-gradient-to-br from-purple-500 to-indigo-600 rounded-xl p-4 text-white">
+            <div className="bg-gradient-to-br from-purple-500 to-indigo-600 dark:from-pfm-accent dark:to-pfm-accent-muted rounded-xl p-4 text-white">
               <h3 className="font-semibold mb-2">Quick Stats</h3>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">

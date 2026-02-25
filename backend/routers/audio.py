@@ -84,7 +84,7 @@ async def transcribe_audio_file(
     
     settings = db.query(Settings).first()
     if not settings:
-        settings = Settings(id=1, whisper_mode="api")
+        settings = Settings(id=1, whisper_mode="local")
         db.add(settings)
         db.commit()
     
@@ -132,10 +132,32 @@ async def transcribe_audio_file(
             "lines_matched": len(lines)
         }
         
+    except ImportError:
+        audio.status = "uploaded"  # keep so user can retry after switching to API
+        db.commit()
+        raise HTTPException(
+            status_code=400,
+            detail="Local Whisper is not installed on this server. Go to Settings and switch to OpenAI API mode, then add your API key."
+        )
     except Exception as e:
+        err_msg = str(e)
+        if "Local Whisper not installed" in err_msg or "openai-whisper" in err_msg:
+            audio.status = "uploaded"
+            db.commit()
+            raise HTTPException(
+                status_code=400,
+                detail="Local Whisper is not installed on this server. Go to Settings and switch to OpenAI API mode, then add your API key."
+            )
+        if "Numpy is not available" in err_msg or "numpy" in err_msg.lower():
+            audio.status = "uploaded"
+            db.commit()
+            raise HTTPException(
+                status_code=400,
+                detail="Numpy is missing in the backend. In the backend folder run: source venv/bin/activate && pip install numpy && restart the server."
+            )
         audio.status = "error"
         db.commit()
-        raise HTTPException(status_code=500, detail=f"Transcription failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Transcription failed: {err_msg}")
 
 
 @router.get("/{project_id}/files", response_model=List[AudioUploadResponse])

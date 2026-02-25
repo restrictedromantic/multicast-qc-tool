@@ -12,7 +12,7 @@ def get_settings(db: Session = Depends(get_db)):
     """Get current settings."""
     settings = db.query(Settings).first()
     if not settings:
-        settings = Settings(id=1, whisper_mode="api")
+        settings = Settings(id=1, whisper_mode="local")
         db.add(settings)
         db.commit()
     

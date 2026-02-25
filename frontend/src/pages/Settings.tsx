@@ -67,14 +67,14 @@ export default function Settings() {
   return (
     <div className="max-w-2xl mx-auto space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Settings</h1>
-        <p className="text-gray-500">Configure your Multicast QC Tool</p>
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-pfm-text">Settings</h1>
+        <p className="text-gray-500 dark:text-pfm-text-muted">Configure your Multicast QC Tool</p>
       </div>
 
       {/* Whisper Mode */}
-      <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-          <Cpu className="w-5 h-5 text-purple-600" />
+      <div className="bg-white dark:bg-pfm-surface rounded-xl border border-gray-200 dark:border-pfm-border p-6 shadow-sm">
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-pfm-text mb-4 flex items-center gap-2">
+          <Cpu className="w-5 h-5 text-purple-600 dark:text-pfm-accent" />
           Transcription Mode
         </h2>
         <div className="grid grid-cols-2 gap-4">
@@ -83,12 +83,12 @@ export default function Settings() {
             className={cn(
               'p-4 rounded-lg border-2 text-left transition-all',
               whisperMode === 'api'
-                ? 'border-purple-500 bg-purple-50'
-                : 'border-gray-200 hover:border-gray-300'
+                ? 'border-purple-500 bg-purple-50 dark:border-pfm-accent dark:bg-pfm-accent/20'
+                : 'border-gray-200 hover:border-gray-300 dark:border-pfm-border dark:hover:border-pfm-text-muted'
             )}
           >
-            <h3 className="font-medium text-gray-900">OpenAI API</h3>
-            <p className="text-sm text-gray-500 mt-1">
+            <h3 className="font-medium text-gray-900 dark:text-pfm-text">OpenAI API</h3>
+            <p className="text-sm text-gray-500 dark:text-pfm-text-muted mt-1">
               Fast & accurate. ~$0.006/min
             </p>
           </button>
@@ -97,35 +97,38 @@ export default function Settings() {
             className={cn(
               'p-4 rounded-lg border-2 text-left transition-all',
               whisperMode === 'local'
-                ? 'border-purple-500 bg-purple-50'
-                : 'border-gray-200 hover:border-gray-300'
+                ? 'border-purple-500 bg-purple-50 dark:border-pfm-accent dark:bg-pfm-accent/20'
+                : 'border-gray-200 hover:border-gray-300 dark:border-pfm-border dark:hover:border-pfm-text-muted'
             )}
           >
-            <h3 className="font-medium text-gray-900">Local Whisper</h3>
-            <p className="text-sm text-gray-500 mt-1">
-              Free but slower. Runs locally
+            <h3 className="font-medium text-gray-900 dark:text-pfm-text">Local Whisper</h3>
+            <p className="text-sm text-gray-500 dark:text-pfm-text-muted mt-1">
+              Free but slower. Not available on all servers.
             </p>
           </button>
         </div>
+        <p className="text-xs text-gray-500 dark:text-pfm-text-muted mt-3">
+          Recommended: use OpenAI API and add your key below so transcription works everywhere.
+        </p>
       </div>
 
       {/* API Key */}
-      <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-          <Key className="w-5 h-5 text-purple-600" />
+      <div className="bg-white dark:bg-pfm-surface rounded-xl border border-gray-200 dark:border-pfm-border p-6 shadow-sm">
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-pfm-text mb-4 flex items-center gap-2">
+          <Key className="w-5 h-5 text-purple-600 dark:text-pfm-accent" />
           OpenAI API Key
         </h2>
         <div className="space-y-4">
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <span className="text-sm text-gray-600">Status:</span>
+              <span className="text-sm text-gray-600 dark:text-pfm-text-muted">Status:</span>
               {apiKeyConfigured ? (
-                <span className="flex items-center gap-1 text-sm text-green-600">
+                <span className="flex items-center gap-1 text-sm text-green-600 dark:text-pfm-success">
                   <Check className="w-4 h-4" />
                   Configured
                 </span>
               ) : (
-                <span className="flex items-center gap-1 text-sm text-yellow-600">
+                <span className="flex items-center gap-1 text-sm text-yellow-600 dark:text-pfm-warning">
                   <AlertCircle className="w-4 h-4" />
                   Not configured
                 </span>
@@ -136,15 +139,15 @@ export default function Settings() {
               value={apiKey}
               onChange={(e) => setApiKey(e.target.value)}
               placeholder={apiKeyConfigured ? '••••••••••••••••' : 'sk-...'}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-pfm-border dark:bg-pfm-bg dark:text-pfm-text rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 dark:focus:ring-pfm-accent"
             />
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-gray-500 dark:text-pfm-text-muted mt-1">
               Get your API key from{' '}
               <a
                 href="https://platform.openai.com/api-keys"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-purple-600 hover:underline"
+                className="text-purple-600 dark:text-pfm-accent hover:underline"
               >
                 OpenAI Dashboard
               </a>
@@ -155,7 +158,7 @@ export default function Settings() {
             <button
               onClick={testApiKey}
               disabled={isTesting}
-              className="px-4 py-2 text-sm text-purple-600 hover:bg-purple-50 rounded-lg transition-colors disabled:opacity-50"
+              className="px-4 py-2 text-sm text-purple-600 hover:bg-purple-50 dark:text-pfm-accent dark:hover:bg-pfm-surface-hover rounded-lg transition-colors disabled:opacity-50"
             >
               {isTesting ? (
                 <span className="flex items-center gap-2">
@@ -175,8 +178,8 @@ export default function Settings() {
         <div
           className={cn(
             'flex items-center gap-2 p-4 rounded-lg',
-            message.type === 'success' && 'bg-green-50 text-green-700',
-            message.type === 'error' && 'bg-red-50 text-red-700'
+            message.type === 'success' && 'bg-green-50 text-green-700 dark:bg-pfm-success/20 dark:text-pfm-success',
+            message.type === 'error' && 'bg-red-50 text-red-700 dark:bg-pfm-error/20 dark:text-pfm-error'
           )}
         >
           {message.type === 'success' ? (
@@ -192,7 +195,7 @@ export default function Settings() {
       <button
         onClick={saveSettings}
         disabled={isSaving}
-        className="w-full py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors disabled:opacity-50 font-medium"
+        className="w-full py-3 bg-purple-600 dark:bg-pfm-accent text-white rounded-lg hover:bg-purple-700 dark:hover:bg-pfm-accent-hover transition-colors disabled:opacity-50 font-medium"
       >
         {isSaving ? (
           <span className="flex items-center justify-center gap-2">

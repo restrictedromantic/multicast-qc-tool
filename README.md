@@ -17,7 +17,7 @@ A quality control tool for multicast voice-over recordings at Pocket FM. Detects
 
 - Python 3.11+
 - Node.js 18+
-- OpenAI API key (optional, for API transcription mode)
+- **No OpenAI key?** The app defaults to **Local Whisper** (free, runs on your machine). See below.
 
 ### Backend Setup
 
@@ -30,6 +30,14 @@ uvicorn main:app --reload
 ```
 
 Backend runs at http://localhost:8000
+
+**Using Local Whisper (no API key):** The app defaults to local transcription. The first time you transcribe, it will download a small Whisper model (~75 MB). If you see "Local Whisper not installed", run:
+
+```bash
+pip install openai-whisper
+```
+
+Then in the app go to **Settings** and choose **Local Whisper** → **Save**. Upload audio again to transcribe.
 
 ### Frontend Setup
 

@@ -81,8 +81,8 @@ export default function ScriptUpload({ projectId, onUploadComplete }: ScriptUplo
         className={cn(
           'border-2 border-dashed rounded-xl p-8 text-center transition-all cursor-pointer',
           isDragging
-            ? 'border-purple-500 bg-purple-50'
-            : 'border-gray-300 hover:border-purple-400 hover:bg-gray-50',
+            ? 'border-purple-500 bg-purple-50 dark:border-pfm-accent dark:bg-pfm-accent/20'
+            : 'border-gray-300 hover:border-purple-400 hover:bg-gray-50 dark:border-pfm-border dark:hover:border-pfm-accent dark:hover:bg-pfm-surface-hover',
           isUploading && 'opacity-50 pointer-events-none'
         )}
       >
@@ -97,17 +97,17 @@ export default function ScriptUpload({ projectId, onUploadComplete }: ScriptUplo
         <label htmlFor="script-upload" className="cursor-pointer">
           <div className="flex flex-col items-center gap-3">
             {isUploading ? (
-              <div className="w-12 h-12 border-4 border-purple-500 border-t-transparent rounded-full animate-spin" />
+              <div className="w-12 h-12 border-4 border-purple-500 dark:border-pfm-accent border-t-transparent rounded-full animate-spin" />
             ) : (
-              <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
-                <Upload className="w-6 h-6 text-purple-600" />
+              <div className="w-12 h-12 bg-purple-100 dark:bg-pfm-accent/20 rounded-full flex items-center justify-center">
+                <Upload className="w-6 h-6 text-purple-600 dark:text-pfm-accent" />
               </div>
             )}
             <div>
-              <p className="text-sm font-medium text-gray-700">
+              <p className="text-sm font-medium text-gray-700 dark:text-pfm-text">
                 {isUploading ? 'Uploading & parsing...' : 'Drop your script here'}
               </p>
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-gray-500 dark:text-pfm-text-muted mt-1">
                 Supports .docx files with color-coded text
               </p>
             </div>
@@ -119,8 +119,8 @@ export default function ScriptUpload({ projectId, onUploadComplete }: ScriptUplo
         <div
           className={cn(
             'flex items-center gap-2 p-3 rounded-lg text-sm',
-            uploadStatus === 'success' && 'bg-green-50 text-green-700',
-            uploadStatus === 'error' && 'bg-red-50 text-red-700'
+            uploadStatus === 'success' && 'bg-green-50 text-green-700 dark:bg-pfm-success/20 dark:text-pfm-success',
+            uploadStatus === 'error' && 'bg-red-50 text-red-700 dark:bg-pfm-error/20 dark:text-pfm-error'
           )}
         >
           {uploadStatus === 'success' ? (

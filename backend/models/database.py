@@ -91,7 +91,7 @@ class Settings(Base):
     
     id = Column(Integer, primary_key=True, default=1)
     openai_api_key = Column(String, nullable=True)
-    whisper_mode = Column(String, default="api")
+    whisper_mode = Column(String, default="local")
 
 
 Base.metadata.create_all(bind=engine)
