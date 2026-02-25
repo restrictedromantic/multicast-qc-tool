@@ -3,19 +3,23 @@ const BACKEND = 'https://multicastqctool-production.up.railway.app';
 export default async function handler(req, res) {
   const path = req.query.path || [];
   const pathStr = Array.isArray(path) ? path.join('/') : path;
-  const url = `${BACKEND}/${pathStr}`;
-  const forwardHeaders = { ...req.headers };
-  delete forwardHeaders.host;
-  delete forwardHeaders.connection;
+  const method = (req.method || 'GET').toUpperCase();
+  // FastAPI expects POST /projects/ (trailing slash) for create; avoid redirect
+  const needsTrailingSlash = ['POST', 'PUT', 'PATCH'].includes(method) && pathStr && !pathStr.endsWith('/');
+  const url = `${BACKEND}/${pathStr}${needsTrailingSlash ? '/' : ''}`;
+
+  const forwardHeaders = {};
+  if (req.headers['content-type']) forwardHeaders['content-type'] = req.headers['content-type'];
+  if (req.headers['accept']) forwardHeaders['accept'] = req.headers['accept'];
 
   let body = undefined;
-  if (req.method !== 'GET' && req.method !== 'HEAD' && req.body != null) {
+  if (method !== 'GET' && method !== 'HEAD' && req.body != null) {
     body = typeof req.body === 'object' && !Buffer.isBuffer(req.body) ? JSON.stringify(req.body) : req.body;
   }
 
   try {
     const resp = await fetch(url, {
-      method: req.method,
+      method,
       headers: forwardHeaders,
       body,
     });
