@@ -44,6 +44,12 @@ def health_check():
     return {"status": "healthy"}
 
 
+@app.get("/version")
+def version():
+    """Return version and feature flags so frontend can verify backend deploy."""
+    return {"version": "1.0.0", "pdf_supported": True}
+
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)

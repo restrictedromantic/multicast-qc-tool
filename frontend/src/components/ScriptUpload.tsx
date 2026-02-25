@@ -68,7 +68,11 @@ export default function ScriptUpload({ projectId, onUploadComplete }: ScriptUplo
     } catch (error: any) {
       setUploadStatus('error');
       const detail = error.response?.data?.detail;
-      setMessage(typeof detail === 'string' ? detail : Array.isArray(detail) ? detail.join(', ') : 'Upload failed');
+      let msg = typeof detail === 'string' ? detail : Array.isArray(detail) ? detail.join(', ') : 'Upload failed';
+      if (msg.toLowerCase().includes('only docx') && !msg.toLowerCase().includes('pdf')) {
+        msg = 'Backend may be outdated: redeploy the backend on Railway so PDF/DOCX uploads work.';
+      }
+      setMessage(msg);
     } finally {
       setIsUploading(false);
     }

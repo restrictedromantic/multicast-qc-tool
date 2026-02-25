@@ -101,9 +101,10 @@ Examples:
 
 1. Push to GitHub
 2. Create new project in Railway
-3. Set root directory to `backend`
-4. **Add a PostgreSQL database** (Railway → Add Plugin → PostgreSQL), then in your backend service set **DATABASE_URL** to the provided URL. Without this, the app uses SQLite on an ephemeral filesystem, so projects disappear after restarts and "Project not found" appears when opening a project.
-5. Railway will auto-detect the Dockerfile
+3. Set **root directory to `backend`** (so PDF/DOCX script upload and settings work)
+4. After each push, Railway redeploys automatically if connected to the repo. If script upload shows "Only DOCX", trigger a manual redeploy so the latest backend is live.
+5. **Add a PostgreSQL database** (Railway → Add Plugin → PostgreSQL), then in your backend service set **DATABASE_URL** to the provided URL. Without this, the app uses SQLite on an ephemeral filesystem, so projects disappear after restarts and "Project not found" appears when opening a project.
+6. Railway will auto-detect the Dockerfile
 
 ## License
 

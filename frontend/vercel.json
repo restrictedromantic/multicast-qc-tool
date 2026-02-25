@@ -4,17 +4,12 @@
     { "source": "/api/scripts/:path*", "destination": "https://multicastqctool-production.up.railway.app/scripts/:path*" },
     { "source": "/api/audio/:path*", "destination": "https://multicastqctool-production.up.railway.app/audio/:path*" },
     { "source": "/api/qc/:path*", "destination": "https://multicastqctool-production.up.railway.app/qc/:path*" },
-    { "source": "/api/settings", "destination": "https://multicastqctool-production.up.railway.app/settings" },
+    { "source": "/api/version", "destination": "https://multicastqctool-production.up.railway.app/version" },
+    { "source": "/api/settings", "destination": "https://multicastqctool-production.up.railway.app/settings/" },
     { "source": "/project/:path*", "destination": "/" },
     { "source": "/settings", "destination": "/" }
   ],
   "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "X-Frame-Options", "value": "DENY" }
-      ]
-    }
+    { "source": "/(.*)", "headers": [{ "key": "X-Content-Type-Options", "value": "nosniff" }, { "key": "X-Frame-Options", "value": "DENY" }] }
   ]
 }
