@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Plus, Folder, Trash2, ExternalLink } from 'lucide-react';
-import { projectsApi, Project } from '../lib/api';
+import { projectsApi, Project, apiBaseUrl } from '../lib/api';
 import { cn } from '../lib/utils';
 
 export default function Dashboard() {
@@ -45,9 +45,10 @@ export default function Dashboard() {
       const detail = error.response?.data?.detail;
       const msg = typeof detail === 'string' ? detail : error.message;
       if (error.code === 'ERR_NETWORK' || !error.response || status === 404) {
-        setCreateError(
-          'Backend not configured. In Vercel → Project → Settings → Environment Variables, add VITE_API_URL = your Railway backend URL (e.g. https://your-app.up.railway.app), then redeploy.'
-        );
+        const hint = apiBaseUrl === '/api'
+          ? 'VITE_API_URL was not set at build time. In Vercel: add env var VITE_API_URL for Production, then use "Redeploy" and tick "Clear build cache".'
+          : `Backend unreachable (using: ${apiBaseUrl}). Check the URL and CORS on your backend.`;
+        setCreateError(hint);
       } else {
         setCreateError(msg || 'Could not create project.');
       }

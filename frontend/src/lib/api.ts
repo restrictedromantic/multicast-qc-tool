@@ -2,6 +2,9 @@ import axios from 'axios';
 
 const API_BASE = import.meta.env.VITE_API_URL || '/api';
 
+/** For debugging: what API URL the built app is using (set at build time). */
+export const apiBaseUrl = API_BASE;
+
 const api = axios.create({
   baseURL: API_BASE,
 });
