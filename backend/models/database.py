@@ -2,11 +2,19 @@ from sqlalchemy import create_engine, Column, String, Integer, Float, DateTime, 
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
 from datetime import datetime
+import os
 import uuid
 
-DATABASE_URL = "sqlite:///./multicast_qc.db"
+# Use DATABASE_URL in production (e.g. Railway PostgreSQL); SQLite for local/dev.
+# Railway's filesystem is ephemeral — without a real DB, projects disappear after deploy/restart.
+DATABASE_URL = os.environ.get("DATABASE_URL") or "sqlite:///./multicast_qc.db"
+if DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
 
-engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
+_connect_args = {} if "sqlite" in DATABASE_URL else {}
+if "sqlite" in DATABASE_URL:
+    _connect_args["check_same_thread"] = False
+engine = create_engine(DATABASE_URL, connect_args=_connect_args)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 

@@ -40,8 +40,14 @@ export default function ProjectView() {
         const reportRes = await qcApi.getReport(projectId);
         setReport(reportRes.data);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to load project:', error);
+      const fromBackend = error.response?.headers?.['x-backend-404'] === 'true';
+      if (fromBackend && error.response?.status === 404) {
+        console.warn(
+          'Backend returned 404 for project. On Railway, use a persistent database (PostgreSQL): set DATABASE_URL so projects persist across restarts.'
+        );
+      }
     } finally {
       setIsLoading(false);
     }
@@ -77,8 +83,11 @@ export default function ProjectView() {
 
   if (!project) {
     return (
-      <div className="text-center py-12">
+      <div className="text-center py-12 max-w-md mx-auto">
         <h2 className="text-xl font-bold text-gray-900 dark:text-pfm-text mb-2">Project not found</h2>
+        <p className="text-sm text-gray-500 dark:text-pfm-text-muted mb-4">
+          If you just created this project, the backend may be using a temporary database. On Railway, add a PostgreSQL database and set <code className="bg-gray-200 dark:bg-pfm-surface px-1 rounded">DATABASE_URL</code> so projects persist.
+        </p>
         <Link to="/" className="text-purple-600 dark:text-pfm-accent hover:underline">
           Back to Dashboard
         </Link>

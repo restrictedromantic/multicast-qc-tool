@@ -11,6 +11,7 @@ pydantic>=2.10.0
 pydantic-settings>=2.6.0
 sqlalchemy>=2.0.35
 aiosqlite>=0.20.0
+psycopg2-binary>=2.9.0
 python-jose[cryptography]>=3.3.0
 aiofiles>=24.1.0
 setuptools

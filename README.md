@@ -95,14 +95,15 @@ Examples:
 1. Push to GitHub
 2. Import project in Vercel
 3. Set root directory to `frontend`
-4. Add environment variable: `VITE_API_URL=https://your-railway-url.up.railway.app`
+4. The app uses `/api`; configure serverless functions to proxy to your Railway backend (see `frontend/api/`).
 
 ### Railway (Backend)
 
 1. Push to GitHub
 2. Create new project in Railway
 3. Set root directory to `backend`
-4. Railway will auto-detect the Dockerfile
+4. **Add a PostgreSQL database** (Railway → Add Plugin → PostgreSQL), then in your backend service set **DATABASE_URL** to the provided URL. Without this, the app uses SQLite on an ephemeral filesystem, so projects disappear after restarts and "Project not found" appears when opening a project.
+5. Railway will auto-detect the Dockerfile
 
 ## License
 
